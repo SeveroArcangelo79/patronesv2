@@ -1,0 +1,362 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Patrones Polares</title><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script><style>:root{--cream-light:#FDF8F3;--cream:#F5EDE4;--cream-dark:#E8DDD0;--sage-light:#C5D4C0;--sage:#9BB08F;--sage-dark:#7A9A6D;--terracotta-light:#D4847C;--terracotta:#B85C50;--terracotta-dark:#8B3A30;--text-primary:#2C2420;--text-secondary:#5C544D;--text-muted:#8A817A;--border:#D4C8BC;--shadow-sm:0 1px 3px rgba(44,36,32,0.08);--shadow-md:0 4px 12px rgba(44,36,32,0.12);--shadow-lg:0 8px 24px rgba(44,36,32,0.16);--radius-sm:6px;--radius-md:10px;--radius-lg:16px}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:linear-gradient(135deg,var(--cream-light) 0%,var(--cream) 100%);color:var(--text-primary);height:100vh;display:flex;overflow:hidden;line-height:1.5}#main_widget{display:flex;width:100%;height:100%;padding:16px;gap:16px}#controls_panel{width:380px;min-width:380px;display:flex;flex-direction:column;gap:16px;background:var(--cream);padding:16px;border-radius:var(--radius-lg);border:1px solid var(--border);overflow-y:auto}#title_label{text-align:center;font-size:18px;font-weight:700;color:var(--terracotta-dark);padding-bottom:8px;border-bottom:2px solid var(--terracotta);margin-bottom:4px}.group-box{border:1px solid var(--border);border-radius:var(--radius-md);padding:16px;background:white;position:relative}.group-box legend{font-size:11px;font-weight:600;padding:0 10px;color:var(--terracotta);text-transform:uppercase;letter-spacing:0.5px;background:white;margin-left:4px}#visibility_layout{display:flex;flex-direction:column;gap:8px}#visibility_layout > div{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:var(--radius-sm);transition:background 0.2s ease}#visibility_layout > div:hover{background:var(--cream-light)}#visibility_layout input[type="checkbox"]{width:16px;height:16px;accent-color:var(--terracotta);cursor:pointer}#visibility_layout label{font-size:13px;color:var(--text-secondary);cursor:pointer;flex:1}#style_layout{display:grid;grid-template-columns:1fr auto auto;gap:10px 12px;align-items:center}#style_layout .header{font-weight:600;font-size:11px;text-align:center;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.3px;padding-bottom:6px;border-bottom:1px solid var(--cream-dark)}#style_layout .label-col{text-align:left;font-size:12px;color:var(--text-secondary)}.color-btn{width:50px;height:26px;border:2px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all 0.2s ease}.color-btn:hover{border-color:var(--terracotta);transform:scale(1.05)}.style-btn{width:80px;height:28px;cursor:pointer;background:var(--cream-light);border:1px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:var(--text-secondary);transition:all 0.2s ease}.style-btn:hover{background:var(--cream-dark);border-color:var(--terracotta)}#linewidth_layout{display:flex;align-items:center;gap:12px}input[type=range]{flex-grow:1;-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;background:var(--cream-dark);cursor:pointer}input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:var(--terracotta);cursor:pointer;box-shadow:var(--shadow-sm);transition:all 0.2s ease}input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.1);background:var(--terracotta-dark)}input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--terracotta);cursor:pointer;border:none}#linewidth_label{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--terracotta);min-width:35px;text-align:right}#actions_layout{display:grid;grid-template-columns:1fr 1fr;gap:10px}.action-btn{padding:10px 12px;cursor:pointer;background:var(--cream-light);border:1px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--text-secondary);transition:all 0.2s ease}.action-btn:hover{background:var(--cream-dark);border-color:var(--terracotta);color:var(--terracotta-dark)}.action-btn.primary{background:linear-gradient(135deg,var(--terracotta) 0%,var(--terracotta-dark) 100%);color:var(--cream-light);border:none}.action-btn.primary:hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}.action-btn.danger{background:var(--cream-light);color:var(--terracotta-dark);border-color:var(--terracotta-light)}.action-btn.danger:hover{background:var(--terracotta-light);color:white}#plots_panel{flex-grow:1;display:flex;background:white;border:1px solid var(--border);border-radius:var(--radius-lg);padding:0;position:relative;overflow:hidden;box-shadow:var(--shadow-md)}.plot-container{height:100%}.modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(44,36,32,0.6);backdrop-filter:blur(4px)}.modal-content{background:var(--cream-light);margin:3% auto;padding:24px;border:1px solid var(--border);border-radius:var(--radius-lg);width:85%;height:80%;display:flex;flex-direction:column;box-shadow:var(--shadow-lg)}.modal-header{font-weight:700;font-size:18px;color:var(--terracotta-dark);margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--terracotta)}.modal-plot-area{flex-grow:1;width:100%;height:100%;background:white;border-radius:var(--radius-md);border:1px solid var(--border)}.modal-close-btn{margin-top:16px;padding:12px 24px;background:linear-gradient(135deg,var(--terracotta) 0%,var(--terracotta-dark) 100%);color:var(--cream-light);border:none;border-radius:var(--radius-md);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;align-self:center;transition:all 0.2s ease}.modal-close-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}#controls_panel::-webkit-scrollbar{width:6px}#controls_panel::-webkit-scrollbar-track{background:var(--cream)}#controls_panel::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}@media (max-width:1000px){#main_widget{flex-direction:column}#controls_panel{width:100%;min-width:100%;max-height:40vh}#plots_panel{flex-direction:column}.plot-container{width:100% !important;height:50% !important}}</style></head><body><div id="main_widget"><div id="controls_panel"><div id="title_label">Patrones Polares</div><fieldset class="group-box"><legend>Mostrar/Ocultar Patrones</legend><div id="visibility_layout"></div></fieldset><fieldset class="group-box"><legend>Configurar Parametros</legend><div id="style_layout"><div class="header label-col">Patrón</div><div class="header">Color</div><div class="header">Estilo</div></div></fieldset><fieldset class="group-box"><legend>Espesor del Trazo - Línea</legend><div id="linewidth_layout"><input type="range" id="linewidth_slider" min="1" max="5" step="1" value="2"><span id="linewidth_label">2px</span></div></fieldset><fieldset class="group-box"><legend>Acciones</legend><div id="actions_layout"><button class="action-btn" id="btn_zoom_cart">Zoom Cartesiano</button><button class="action-btn" id="btn_zoom_polar">Zoom Polar</button><button class="action-btn primary" id="btn_export">Exportar Gráfico</button><button class="action-btn danger" id="btn_quit">Salir</button></div></fieldset></div><div id="plots_panel"><div id="cartesian_div" class="plot-container" style="width: 65%;"></div><div id="polar_div" class="plot-container" style="width: 35%;"></div></div></div><input type="color" id="global_color_picker" style="display:none;"><div id="zoom_modal" class="modal"><div class="modal-content"><div id="modal_title" class="modal-header">Zoom</div><div id="modal_plot" class="modal-plot-area"></div><button class="modal-close-btn" onclick="document.getElementById('zoom_modal').style.display='none'">Cerrar</button></div></div><script>
+const CONFIG = {
+    'db_limits': {'cart_min': -40, 'pol_min': -30, 'pol_max': 0},
+    'default_linewidth': 2,
+    'line_styles': {'Continua': 'solid', 'Punteada': 'dash'},
+    'style_names': {'solid': 'Continua', 'dash': 'Punteada', 'dot': 'Punteada'},
+    'default_colors': {
+        'Omnidireccional':'#3498db',
+        'Cardioide Ancho':'#1abc9c',
+        'Cardioide':'#7A9A6D',
+        'Supercardioide':'#9b59b6',
+        'Hipercardioide':'#B85C50',
+        'Figura de 8':'#e74c3c'
+    }
+};
+const SETTINGS_KEY = "polar_plotter_settings";
+const AppState = {
+    patterns: {},
+    linewidth: CONFIG.default_linewidth,
+    current_picking_label: null
+};
+function linspace(start, end, num) {
+    const arr = [];
+    const step = (end - start) / (num - 1);
+    for (let i = 0; i < num; i++) arr.push(start + (step * i));
+    return arr;
+}
+function vectorAdd(arr, val) { return arr.map(x => x + val); }
+function vectorMul(arr, val) { return arr.map(x => x * val); }
+function vectorAbs(arr) { return arr.map(x => Math.abs(x)); }
+function vectorCos(arr) { return arr.map(x => Math.cos(x)); }
+function vectorMax(arr, val) { return arr.map(x => Math.max(x, val)); }
+function generatePolarPatterns(db_limits) {
+    const patterns_data = {};
+    const theta_deg_cart = linspace(-180, 180, 361);
+    const theta_rad_cart = theta_deg_cart.map(d => d * Math.PI / 180);
+    const theta_rad_pol = linspace(0, 2 * Math.PI, 361);
+    const theta_deg_pol = linspace(0, 360, 361);
+    const ones_cart = new Array(361).fill(1);
+    const ones_pol = new Array(361).fill(1);
+    const calcGain = (A, B, thetas) => thetas.map(t => Math.abs(A + B * Math.cos(t)));
+    const formulas = {
+        'Omnidireccional': [ones_cart, ones_pol],
+        'Cardioide Ancho': [
+            calcGain(0.63, 0.37, theta_rad_cart),
+            calcGain(0.63, 0.37, theta_rad_pol)
+        ],
+        'Cardioide': [
+            calcGain(0.5, 0.5, theta_rad_cart),
+            calcGain(0.5, 0.5, theta_rad_pol)
+        ],
+        'Supercardioide': [
+            calcGain(0.366, 0.634, theta_rad_cart),
+            calcGain(0.366, 0.634, theta_rad_pol)
+        ],
+        'Hipercardioide': [
+            calcGain(0.25, 0.75, theta_rad_cart),
+            calcGain(0.25, 0.75, theta_rad_pol)
+        ],
+        'Figura de 8': [
+            calcGain(0.0, 1.0, theta_rad_cart),
+            calcGain(0.0, 1.0, theta_rad_pol)
+        ]
+    };
+    const min_amp_cart = Math.pow(10, db_limits.cart_min / 20);
+    const min_amp_pol = Math.pow(10, db_limits.pol_min / 20);
+    const pol_span = db_limits.pol_max - db_limits.pol_min;
+    for (let [label, vals] of Object.entries(formulas)) {
+        let gain_cart = vals[0];
+        let gain_pol = vals[1];
+        let cart_db = gain_cart.map(v => 20 * Math.log10(Math.max(v, min_amp_cart)));
+        let pol_db_unclipped = gain_pol.map(v => 20 * Math.log10(Math.max(v, min_amp_pol)));
+        let radial_norm = pol_db_unclipped.map(v => {
+            let clamped = Math.min(Math.max(v, db_limits.pol_min), db_limits.pol_max);
+            return (clamped - db_limits.pol_min) / pol_span;
+        });
+        patterns_data[label] = {
+            'cart_db': cart_db,
+            'radial_norm': radial_norm,
+            'theta_deg_cart': theta_deg_cart,
+            'theta_deg_pol': theta_deg_pol
+        };
+    }
+    return patterns_data;
+}
+function initApp() {
+    loadSettings();
+    const rawData = generatePolarPatterns(CONFIG.db_limits);
+    for(let label in rawData) {
+        if(!AppState.patterns[label]) {
+            AppState.patterns[label] = {
+                visible: true,
+                color: CONFIG.default_colors[label] || '#000000',
+                linestyle: 'solid'
+            };
+        }
+        Object.assign(AppState.patterns[label], rawData[label]);
+    }
+    createVisibilityControls();
+    createStyleControls();
+    setupGlobalListeners();
+    updatePlots();
+}
+function loadSettings() {
+    try {
+        const saved = localStorage.getItem(SETTINGS_KEY);
+        if (saved) {
+            const data = JSON.parse(saved);
+            AppState.linewidth = data.linewidth || CONFIG.default_linewidth;
+            AppState.patterns = data.patterns || {};
+            document.getElementById('linewidth_slider').value = AppState.linewidth;
+            document.getElementById('linewidth_label').innerText = AppState.linewidth + "px";
+        }
+    } catch(e) { console.error("Error loading settings", e); }
+}
+function saveSettings() {
+    const toSave = {
+        linewidth: parseInt(document.getElementById('linewidth_slider').value),
+        patterns: {}
+    };
+    for(let label in AppState.patterns) {
+        const p = AppState.patterns[label];
+        toSave.patterns[label] = {
+            visible: p.visible,
+            color: p.color,
+            linestyle: p.linestyle
+        };
+    }
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(toSave));
+}
+function createVisibilityControls() {
+    const container = document.getElementById('visibility_layout');
+    for (let label in CONFIG.default_colors) {
+        const row = document.createElement('div');
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.id = `vis_${label}`;
+        cb.checked = AppState.patterns[label].visible;
+        cb.addEventListener('change', (e) => toggleVisibility(label, e.target.checked));
+        const lbl = document.createElement('label');
+        lbl.htmlFor = `vis_${label}`;
+        lbl.innerText = label;
+        row.appendChild(cb);
+        row.appendChild(lbl);
+        container.appendChild(row);
+    }
+}
+function createStyleControls() {
+    const container = document.getElementById('style_layout');
+    for (let label in CONFIG.default_colors) {
+        const props = AppState.patterns[label];
+        const lblDiv = document.createElement('div');
+        lblDiv.className = 'label-col';
+        lblDiv.innerText = label;
+        const colorDiv = document.createElement('div');
+        colorDiv.style.textAlign = 'center';
+        const colorBtn = document.createElement('button');
+        colorBtn.className = 'color-btn';
+        colorBtn.style.backgroundColor = props.color;
+        colorBtn.onclick = () => openColorPicker(label, colorBtn);
+        colorDiv.appendChild(colorBtn);
+        const styleDiv = document.createElement('div');
+        styleDiv.style.textAlign = 'center';
+        const styleBtn = document.createElement('button');
+        styleBtn.className = 'style-btn';
+        styleBtn.innerText = CONFIG.style_names[props.linestyle] || 'Continua';
+        styleBtn.onclick = () => cycleStyle(label, styleBtn);
+        styleDiv.appendChild(styleBtn);
+        container.appendChild(lblDiv);
+        container.appendChild(colorDiv);
+        container.appendChild(styleDiv);
+    }
+}
+function setupGlobalListeners() {
+    const slider = document.getElementById('linewidth_slider');
+    slider.addEventListener('input', (e) => {
+        AppState.linewidth = parseInt(e.target.value);
+        document.getElementById('linewidth_label').innerText = AppState.linewidth + "px";
+        updatePlots();
+    });
+    document.getElementById('global_color_picker').addEventListener('change', (e) => {
+        if(AppState.current_picking_label) {
+            changeColor(AppState.current_picking_label, e.target.value);
+        }
+    });
+    document.getElementById('btn_zoom_cart').onclick = () => openZoomModal(false);
+    document.getElementById('btn_zoom_polar').onclick = () => openZoomModal(true);
+    document.getElementById('btn_export').onclick = exportGraphs;
+    document.getElementById('btn_quit').onclick = () => {
+        saveSettings();
+        document.body.innerHTML = `
+            <div style="display:flex;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg,#FDF8F3,#F5EDE4);">
+                <div style="text-align:center;font-family:'DM Sans',sans-serif;">
+                    <h1 style="color:#8B3A30;font-size:24px;margin-bottom:8px;">Aplicación Cerrada</h1>
+                    <p style="color:#5C544D;">Puede cerrar esta pestaña</p>
+                </div>
+            </div>`;
+    };
+    window.addEventListener('beforeunload', () => saveSettings());
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            e.preventDefault(); exportGraphs();
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === 'q') {
+            e.preventDefault(); document.getElementById('btn_quit').click();
+        }
+    });
+}
+function toggleVisibility(label, isVisible) {
+    AppState.patterns[label].visible = isVisible;
+    updatePlots();
+}
+function openColorPicker(label, btnElement) {
+    AppState.current_picking_label = label;
+    AppState.current_btn_element = btnElement;
+    const picker = document.getElementById('global_color_picker');
+    picker.value = AppState.patterns[label].color;
+    picker.click();
+}
+function changeColor(label, newHex) {
+    AppState.patterns[label].color = newHex;
+    if(AppState.current_btn_element) {
+        AppState.current_btn_element.style.backgroundColor = newHex;
+    }
+    updatePlots();
+}
+function cycleStyle(label, btnElement) {
+    const current = AppState.patterns[label].linestyle;
+    const nextStyle = current === 'solid' ? 'dash' : 'solid';
+    AppState.patterns[label].linestyle = nextStyle;
+    btnElement.innerText = CONFIG.style_names[nextStyle];
+    updatePlots();
+}
+function getPlotlyLayouts() {
+    const fontCommon = { family: 'DM Sans, Arial', size: 11, color: '#2C2420' };
+    const titleFont = { family: 'DM Sans, Arial', size: 14, color: '#8B3A30' };
+    const cartLayout = {
+        title: { text: 'Respuesta en Función del Ángulo de Incidencia', font: titleFont },
+        xaxis: {
+            title: { text: 'Ángulo de Incidencia (Grados)', font: fontCommon },
+            range: [-180, 180], dtick: 30,
+            tickfont: fontCommon,
+            gridcolor: '#E8DDD0',
+            linecolor: '#D4C8BC',
+            zerolinecolor: '#D4C8BC'
+        },
+        yaxis: {
+            title: { text: 'Sensibilidad (dB)', font: fontCommon },
+            range: [CONFIG.db_limits.cart_min, 6], dtick: 5,
+            tickfont: fontCommon,
+            gridcolor: '#E8DDD0',
+            linecolor: '#D4C8BC',
+            zerolinecolor: '#D4C8BC'
+        },
+        margin: { l: 55, r: 20, t: 50, b: 50 },
+        paper_bgcolor: 'white',
+        plot_bgcolor: '#FDFCFB',
+        showlegend: true,
+        legend: { x: 0.5, y: -0.18, xanchor: 'center', orientation: 'h', font: fontCommon }
+    };
+    const polLayout = {
+        title: { text: 'Diagrama Polar', font: titleFont },
+        polar: {
+            angularaxis: {
+                direction: "counterclockwise",
+                rotation: 90,
+                dtick: 30,
+                tickfont: fontCommon,
+                gridcolor: '#E8DDD0',
+                linecolor: '#D4C8BC'
+            },
+            radialaxis: {
+                range: [0, 1.1],
+                showticklabels: true,
+                tickfont: { family: 'JetBrains Mono', size: 9, color: '#8A817A' },
+                tickmode: 'array',
+                tickvals: [0, 0.166, 0.333, 0.5, 0.666, 0.833, 1.0],
+                ticktext: ['-30', '-25', '-20', '-15', '-10', '-5', '0 dB'],
+                gridcolor: '#E8DDD0',
+                linecolor: '#D4C8BC'
+            },
+            bgcolor: '#FDFCFB'
+        },
+        margin: { l: 40, r: 40, t: 50, b: 40 },
+        paper_bgcolor: 'white',
+        showlegend: false
+    };
+    return { cart: cartLayout, pol: polLayout };
+}
+function updatePlots() {
+    const tracesCart = [];
+    const tracesPol = [];
+    for(let label in CONFIG.default_colors) {
+        const p = AppState.patterns[label];
+        if(!p.visible) continue;
+        tracesCart.push({
+            x: p.theta_deg_cart,
+            y: p.cart_db,
+            type: 'scatter',
+            mode: 'lines',
+            name: label,
+            line: {
+                color: p.color,
+                width: AppState.linewidth,
+                dash: p.linestyle
+            }
+        });
+        tracesPol.push({
+            r: p.radial_norm,
+            theta: p.theta_deg_pol,
+            type: 'scatterpolar',
+            mode: 'lines',
+            name: label,
+            line: {
+                color: p.color,
+                width: AppState.linewidth,
+                dash: p.linestyle
+            }
+        });
+    }
+    const layouts = getPlotlyLayouts();
+    Plotly.react('cartesian_div', tracesCart, layouts.cart, {displayModeBar: false, responsive: true});
+    Plotly.react('polar_div', tracesPol, layouts.pol, {displayModeBar: false, responsive: true});
+}
+function openZoomModal(isPolar) {
+    const modal = document.getElementById('zoom_modal');
+    const title = document.getElementById('modal_title');
+    modal.style.display = 'block';
+    title.innerText = isPolar ? "Diagrama Polar (Zoom)" : "Respuesta en Función del Ángulo (Zoom)";
+    const divId = 'modal_plot';
+    const traces = [];
+    for(let label in CONFIG.default_colors) {
+        const p = AppState.patterns[label];
+        if(!p.visible) continue;
+        if(isPolar) {
+            traces.push({
+                r: p.radial_norm, theta: p.theta_deg_pol,
+                type: 'scatterpolar', mode: 'lines', name: label,
+                line: { color: p.color, width: AppState.linewidth, dash: p.linestyle }
+            });
+        } else {
+            traces.push({
+                x: p.theta_deg_cart, y: p.cart_db,
+                type: 'scatter', mode: 'lines', name: label,
+                line: { color: p.color, width: AppState.linewidth, dash: p.linestyle }
+            });
+        }
+    }
+    const baseLayout = getPlotlyLayouts();
+    const layout = isPolar ? baseLayout.pol : baseLayout.cart;
+    layout.showlegend = true;
+    Plotly.newPlot(divId, traces, layout, {responsive: true});
+}
+function exportGraphs() {
+    Plotly.downloadImage('cartesian_div', {format: 'png', filename: 'patron_polar_cartesiano'});
+    setTimeout(() => {
+        Plotly.downloadImage('polar_div', {format: 'png', filename: 'patron_polar_circular'});
+    }, 500);
+    alert("Gráficos enviados a descarga (revise su carpeta de descargas).");
+}
+window.onload = initApp;
+</script></body></html>
